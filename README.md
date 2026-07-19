@@ -1,77 +1,322 @@
+<div align="center">
+
 # 🎵 Music Genre Clustering AI
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python)
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn)
-![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly)
+### Intelligent Music Discovery Using Unsupervised Machine Learning
 
-## 🌟 Overview
+**Discover hidden patterns in music and group similar songs based on their audio characteristics.**
 
-Intelligent Music Discovery Using Unsupervised Machine Learning.
+<br>
 
-This project is a premium, interactive web application built with **Streamlit** that utilizes **K-Means Clustering** to automatically discover hidden patterns and groups of similar songs based on their audio characteristics (BPM, Energy, Danceability, Loudness, Speechiness), rather than relying solely on existing genre labels.
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-Web_App-red?style=for-the-badge&logo=streamlit&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Machine_Learning-orange?style=for-the-badge&logo=scikitlearn&logoColor=white)
+![K-Means](https://img.shields.io/badge/K--Means-Clustering-purple?style=for-the-badge)
+![PCA](https://img.shields.io/badge/PCA-Visualization-green?style=for-the-badge)
+![Plotly](https://img.shields.io/badge/Plotly-Interactive_Charts-blueviolet?style=for-the-badge&logo=plotly&logoColor=white)
 
-Featuring a beautiful, modern **Glassmorphism** design with vibrant animated gradients and micro-animations, this platform offers a deeply engaging user experience for data exploration.
+</div>
+
+---
+
+## 📌 About the Project
+
+**Music Genre Clustering AI** is an interactive machine learning application that discovers natural groups of similar songs using **unsupervised machine learning**.
+
+Instead of simply relying on predefined genre labels, the system analyzes the actual numerical audio characteristics of songs and uses **K-Means Clustering** to identify hidden patterns within the music dataset.
+
+The project also includes interactive data analytics, PCA-based cluster visualization, dynamic clustering configuration, and a similar-song recommendation system.
+
+---
+
+## 🎯 Project Objective
+
+The main objective of this project is to demonstrate how **unsupervised machine learning** can be used to discover similarities between songs without requiring predefined target labels.
+
+The system follows this workflow:
+
+```text
+Music Dataset
+      ↓
+Data Preprocessing
+      ↓
+Audio Feature Selection
+      ↓
+Feature Scaling
+      ↓
+K-Means Clustering
+      ↓
+Cluster Evaluation
+      ↓
+PCA Visualization
+      ↓
+Similar Song Discovery
+```
+
+---
 
 ## ✨ Key Features
 
-- **📂 Dataset Explorer**: Search and filter through the entire music dataset.
-- **🤖 Interactive Clustering**: Dynamically configure the number of clusters (K) and run K-Means interactively. Enjoy celebratory visual effects upon successful clustering!
-- **🧠 PCA Visualization**: Visualize high-dimensional audio features in an interactive 2D space using Principal Component Analysis.
-- **🎧 AI Similar Song Finder**: Select any track and let the AI find the top 5 most similar songs based on acoustic properties.
-- **📊 Interactive Analytics Dashboard**: Explore the distribution of tempos, energy levels, and genres across your generated clusters using beautiful Plotly charts.
-- **💎 Premium UI/UX**: Stunning frosted glass panels, animated gradient backgrounds, custom 'Outfit' typography, and delightful micro-interactions (like balloons and snow effects!).
+### 🤖 Dynamic Music Clustering
+- Groups similar songs using **K-Means Clustering**
+- Users can dynamically select the number of clusters
+- Supports cluster values from **K = 2 to K = 10**
+- Displays real-time clustering results
 
-## ⚙️ Tech Stack
+### 📈 Clustering Evaluation
+- Calculates **Silhouette Score**
+- Displays model **Inertia**
+- Helps compare clustering quality for different values of K
 
-- **Frontend**: Streamlit, HTML/CSS (Glassmorphism theme)
-- **Machine Learning**: Scikit-Learn (K-Means, PCA, StandardScaler)
-- **Data Manipulation**: Pandas, NumPy
-- **Visualizations**: Plotly Express
+### 🧠 Interactive PCA Visualization
+- Uses **Principal Component Analysis (PCA)**
+- Converts multiple audio features into a 2D representation
+- Displays interactive music clusters using Plotly
+- Hover over individual points to explore song information
 
-## 🚀 Getting Started
+### 🎧 Similar Song Finder
+- Select any available song from the dataset
+- Finds songs from the same musical cluster
+- Uses audio-feature similarity
+- Calculates similarity using **Cosine Similarity**
+- Returns the Top 5 most similar songs
 
-### Prerequisites
-Make sure you have Python installed on your system.
+### 📂 Dataset Explorer
+- Explore the complete music dataset
+- Search songs by track name
+- Search songs by artist
+- View genre and audio characteristics
 
-### Installation
+### 📊 Interactive Analytics Dashboard
+- Genre distribution analysis
+- Energy vs Danceability visualization
+- BPM distribution
+- Energy distribution
+- Cluster-based interactive charts
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Tarunkrsaini/Music-Genre-Clustering-AI.git
-   cd Music-Genre-Clustering-AI
-   ```
-
-2. **Create a virtual environment (optional but recommended):**
-   ```bash
-   python -m venv .venv
-   # Windows:
-   .\.venv\Scripts\activate
-   # macOS/Linux:
-   source .venv/bin/activate
-   ```
-
-3. **Install the dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application:**
-   ```bash
-   streamlit run app.py
-   ```
-
-5. **Enjoy!**
-   The application should open automatically in your web browser at `http://localhost:8501`.
-
-## 🧠 Machine Learning Pipeline
-
-1. **Audio Feature Selection**: Extract relevant audio properties.
-2. **Feature Scaling**: Apply `StandardScaler` to normalize the data.
-3. **K-Means Clustering**: Unsupervised grouping of similar tracks.
-4. **Silhouette Score Evaluation**: Assess the quality of the clusters.
-5. **Dimensionality Reduction**: Use `PCA` to project features into 2D space for visualization.
-6. **Similar Song Discovery**: Compute similarity metrics to recommend tracks.
+### 🎨 Modern Streamlit Interface
+- Premium dark dashboard design
+- Responsive metric cards
+- Sidebar navigation
+- Interactive Plotly visualizations
+- Clean and user-friendly interface
 
 ---
-*Created with ❤️ by Tarun Kr Saini*
+
+## 🧠 Machine Learning Approach
+
+The project uses **K-Means Clustering**, an unsupervised machine learning algorithm that groups data points based on similarity.
+
+The following audio features are currently used for clustering:
+
+| Feature | Description |
+|---|---|
+| 🎚️ BPM | Tempo of the song |
+| ⚡ Energy | Intensity and activity level |
+| 💃 Danceability | How suitable the song is for dancing |
+| 🔊 Loudness | Overall loudness level |
+| 🎙️ Speechiness | Presence of spoken words |
+
+Before clustering, these features are normalized using **StandardScaler** so that features with different numerical ranges contribute fairly to the clustering process.
+
+---
+
+## 📊 Clustering Evaluation Results
+
+The project evaluated multiple values of **K** using the Silhouette Score.
+
+| Number of Clusters (K) | Silhouette Score |
+|---:|---:|
+| 2 | **0.3764** |
+| 3 | 0.2581 |
+| 4 | 0.2563 |
+| 5 | 0.1855 |
+| 6 | 0.1855 |
+| 7 | 0.2020 |
+| 8 | 0.2099 |
+| 9 | 0.2068 |
+| 10 | 0.2143 |
+
+Based on the current dataset and selected audio features, **K = 2** achieved the highest Silhouette Score.
+
+> The application still allows users to dynamically experiment with different cluster values from 2 to 10.
+
+---
+
+## 🎧 How Similar Song Discovery Works
+
+When a user selects a song:
+
+1. The selected song is identified in the dataset.
+2. Its K-Means cluster is determined.
+3. Songs belonging to the same cluster are selected.
+4. Audio-feature similarity is calculated using **Cosine Similarity**.
+5. The most similar songs are ranked.
+6. The Top 5 recommendations are displayed.
+
+This provides a simple machine-learning-based approach to music discovery.
+
+---
+
+## 🛠️ Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Core programming language |
+| Streamlit | Interactive web application |
+| Pandas | Dataset processing |
+| NumPy | Numerical operations |
+| Scikit-Learn | Machine learning |
+| K-Means | Music clustering |
+| StandardScaler | Feature normalization |
+| PCA | Dimensionality reduction |
+| Cosine Similarity | Similar song discovery |
+| Plotly | Interactive data visualization |
+| Matplotlib | ML visualization |
+
+---
+
+## 📁 Project Structure
+
+```text
+MusicGenreClustering/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+├── data/
+│   └── spotify_tracks.csv
+│
+├── assets/
+│   └── style.css
+│
+└── src/
+    ├── __init__.py
+    ├── data_preprocessing.py
+    ├── clustering.py
+    ├── evaluation.py
+    ├── visualization.py
+    ├── similarity.py
+    └── navigation.py
+```
+
+---
+
+## ⚙️ Installation and Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/rajnarharia/Music-Genre-Clustering-AI.git
+```
+
+### 2. Navigate to the Project
+
+```bash
+cd Music-Genre-Clustering-AI
+```
+
+### 3. Create a Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+### 4. Activate the Virtual Environment
+
+#### Windows PowerShell
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+#### macOS / Linux
+
+```bash
+source .venv/bin/activate
+```
+
+### 5. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 6. Run the Application
+
+```bash
+python -m streamlit run app.py
+```
+
+The application will start locally, typically at:
+
+```text
+http://localhost:8501
+```
+
+---
+
+## 🖥️ Application Modules
+
+The application contains five main sections:
+
+- 🏠 **Home** — Project overview and ML workflow
+- 📂 **Dataset** — Explore and search music data
+- 🤖 **Clustering** — Configure and run K-Means clustering
+- 📊 **Analytics** — Explore interactive music visualizations
+- 🎧 **Similar Songs** — Discover musically similar tracks
+
+---
+
+## 🚀 Future Improvements
+
+Future versions of the project can include:
+
+- 🎵 Integration with Spotify API
+- 🔍 Automatic optimal-K detection using the Elbow Method
+- 🧠 DBSCAN and Hierarchical Clustering comparison
+- 🎧 Larger real-world Spotify datasets
+- 📊 Advanced cluster profiling
+- 🤖 AI-generated explanations of music clusters
+- ❤️ Favourite song functionality
+- 🎼 Personalized playlist generation
+- ☁️ Cloud deployment
+
+---
+
+## 👨‍💻 Developer
+
+<div align="center">
+
+### Raj Narharia
+
+**B.Tech Artificial Intelligence Student | AI & Machine Learning Enthusiast**
+
+Passionate about building practical projects using  
+**Artificial Intelligence, Machine Learning and Data Science.**
+
+<br>
+
+[![GitHub](https://img.shields.io/badge/GitHub-rajnarharia-black?style=for-the-badge&logo=github)](https://github.com/rajnarharia)
+
+<br>
+
+### ⭐ If you found this project useful, consider giving the repository a star!
+
+**Made with ❤️ by Raj Narharia**
+
+</div>
+
+---
+
+<div align="center">
+
+### 🎵 Music Genre Clustering AI
+
+**Python • Streamlit • K-Means • Scikit-Learn • PCA • Plotly**
+
+© 2026 Raj Narharia
+
+</div>
