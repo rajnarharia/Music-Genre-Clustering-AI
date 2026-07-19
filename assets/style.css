@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+/* Main App with Animated Gradient Background */
+.stApp {
+    background: linear-gradient(-45deg, #050b14, #120a26, #09121a, #081c34);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #f8fafc;
+    font-family: 'Outfit', sans-serif;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4, h5, h6, p, span, div {
+    font-family: 'Outfit', sans-serif;
+}
+
+h1 {
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, #00e5ff 0%, #b300ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 4px 30px rgba(0, 229, 255, 0.3);
+    letter-spacing: -1px;
+    margin-bottom: 1rem !important;
+}
+
+h2, h3 {
+    color: #f1f5f9 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.5px;
+}
+
+/* Glassmorphism for Metric Cards */
+[data-testid="stMetric"] {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-testid="stMetric"]::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    animation: shine 6s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+[data-testid="stMetric"]:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2);
+}
+
+/* Metric Values */
+[data-testid="stMetricValue"] {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00e5ff, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Metric Label */
+[data-testid="stMetricLabel"] > div {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+/* Alert / Info boxes */
+div.stAlert {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+div.stAlert:hover {
+    transform: translateY(-4px);
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+}
+
+/* Stunning Buttons */
+.stButton > button {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 0.8rem 1.8rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #00e5ff 0%, #7c3aed 100%);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-transform: uppercase;
+}
+
+.stButton > button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.6);
+    color: #fff;
+    background: linear-gradient(135deg, #7c3aed 0%, #00e5ff 100%);
+}
+
+.stButton > button:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.4);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a; 
+}
+::-webkit-scrollbar-thumb {
+    background: #334155; 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #475569; 
+}
+
+/* Dataframe glassmorphism */
+[data-testid="stDataFrame"] {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Select Box */
+[data-baseweb="select"] > div {
+    background-color: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+[data-baseweb="select"] > div:hover {
+    border-color: #00e5ff;
+}
+
+/* Slider Customization */
+.stSlider > div > div > div > div {
+    background: linear-gradient(90deg, #00e5ff 0%, #7c3aed 100%);
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background: rgba(5, 11, 20, 0.95);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Inputs / Search Box */
+.stTextInput > div > div > input {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+.stTextInput > div > div > input:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+}
+
+/* Hide Streamlit Default Footer and Header */
+footer { visibility: hidden; }
+header { background: transparent !important; }
+
+/* Divider enhancement */
+hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+    margin: 2.5rem 0;
+}
