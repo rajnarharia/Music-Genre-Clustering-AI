@@ -14,6 +14,21 @@
 ![K-Means](https://img.shields.io/badge/K--Means-Clustering-purple?style=for-the-badge)
 ![PCA](https://img.shields.io/badge/PCA-Visualization-green?style=for-the-badge)
 ![Plotly](https://img.shields.io/badge/Plotly-Interactive_Charts-blueviolet?style=for-the-badge&logo=plotly&logoColor=white)
+![Deployment](https://img.shields.io/badge/Deployment-Streamlit_Cloud-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+
+</div>
+
+---
+
+## 🌐 Live Demo
+
+Music Genre Clustering AI is deployed and available online on **Streamlit Community Cloud**.
+
+<div align="center">
+
+### 🚀 [Launch Music Genre Clustering AI](https://music-genre-clustering-ai-yoqfsawhtmpk8ar4sdffoc.streamlit.app)
+
+**No installation required — open the application directly in your browser.**
 
 </div>
 
@@ -23,9 +38,9 @@
 
 **Music Genre Clustering AI** is an interactive machine learning application that discovers natural groups of similar songs using **unsupervised machine learning**.
 
-Instead of simply relying on predefined genre labels, the system analyzes the actual numerical audio characteristics of songs and uses **K-Means Clustering** to identify hidden patterns within the music dataset.
+Instead of simply relying on predefined genre labels, the system analyzes the numerical audio characteristics of songs and uses **K-Means Clustering** to identify hidden patterns within the music dataset.
 
-The project also includes interactive data analytics, PCA-based cluster visualization, dynamic clustering configuration, and a similar-song recommendation system.
+The project also includes interactive data analytics, PCA-based cluster visualization, dynamic clustering configuration, and a similar-song discovery system.
 
 ---
 
@@ -58,23 +73,27 @@ Similar Song Discovery
 ## ✨ Key Features
 
 ### 🤖 Dynamic Music Clustering
+
 - Groups similar songs using **K-Means Clustering**
 - Users can dynamically select the number of clusters
 - Supports cluster values from **K = 2 to K = 10**
 - Displays real-time clustering results
 
 ### 📈 Clustering Evaluation
-- Calculates **Silhouette Score**
+
+- Calculates the **Silhouette Score**
 - Displays model **Inertia**
 - Helps compare clustering quality for different values of K
 
 ### 🧠 Interactive PCA Visualization
+
 - Uses **Principal Component Analysis (PCA)**
 - Converts multiple audio features into a 2D representation
 - Displays interactive music clusters using Plotly
 - Hover over individual points to explore song information
 
 ### 🎧 Similar Song Finder
+
 - Select any available song from the dataset
 - Finds songs from the same musical cluster
 - Uses audio-feature similarity
@@ -82,12 +101,14 @@ Similar Song Discovery
 - Returns the Top 5 most similar songs
 
 ### 📂 Dataset Explorer
+
 - Explore the complete music dataset
 - Search songs by track name
 - Search songs by artist
-- View genre and audio characteristics
+- View genres and audio characteristics
 
 ### 📊 Interactive Analytics Dashboard
+
 - Genre distribution analysis
 - Energy vs Danceability visualization
 - BPM distribution
@@ -95,6 +116,7 @@ Similar Song Discovery
 - Cluster-based interactive charts
 
 ### 🎨 Modern Streamlit Interface
+
 - Premium dark dashboard design
 - Responsive metric cards
 - Sidebar navigation
@@ -105,7 +127,7 @@ Similar Song Discovery
 
 ## 🧠 Machine Learning Approach
 
-The project uses **K-Means Clustering**, an unsupervised machine learning algorithm that groups data points based on similarity.
+The project uses **K-Means Clustering**, an unsupervised machine learning algorithm that groups data points based on their similarity.
 
 The following audio features are currently used for clustering:
 
@@ -173,6 +195,8 @@ This provides a simple machine-learning-based approach to music discovery.
 | Cosine Similarity | Similar song discovery |
 | Plotly | Interactive data visualization |
 | Matplotlib | ML visualization |
+| Streamlit Community Cloud | Application deployment |
+| GitHub | Version control and source hosting |
 
 ---
 
@@ -250,7 +274,7 @@ pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-The application will start locally, typically at:
+The application will typically be available locally at:
 
 ```text
 http://localhost:8501
@@ -270,11 +294,23 @@ The application contains five main sections:
 
 ---
 
-## 🚀 Future Improvements
+## 🌐 Deployment
+
+Music Genre Clustering AI is deployed on **Streamlit Community Cloud** and can be accessed directly from any modern web browser.
+
+### 🚀 Live Application
+
+**[Launch Music Genre Clustering AI](https://music-genre-clustering-ai-yoqfsawhtmpk8ar4sdffoc.streamlit.app)**
+
+The deployed application allows users to explore the music dataset, experiment with K-Means clustering, visualize clusters using PCA, analyze music characteristics, and discover similar songs directly from their browser.
+
+---
+
+## 🔮 Future Improvements
 
 Future versions of the project can include:
 
-- 🎵 Integration with Spotify API
+- 🎵 Integration with the Spotify API
 - 🔍 Automatic optimal-K detection using the Elbow Method
 - 🧠 DBSCAN and Hierarchical Clustering comparison
 - 🎧 Larger real-world Spotify datasets
@@ -282,7 +318,6 @@ Future versions of the project can include:
 - 🤖 AI-generated explanations of music clusters
 - ❤️ Favourite song functionality
 - 🎼 Personalized playlist generation
-- ☁️ Cloud deployment
 
 ---
 
@@ -299,24 +334,34 @@ Passionate about building practical projects using
 
 <br>
 
-[![GitHub](https://img.shields.io/badge/GitHub-rajnarharia-black?style=for-the-badge&logo=github)](https://github.com/rajnarharia)
+[![GitHub](https://img.shields.io/badge/GitHub-rajnarharia-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rajnarharia)
 
 <br>
 
-### ⭐ If you found this project useful, consider giving the repository a star!
-
-**Made with ❤️ by Raj Narharia**
+**Developed with ❤️ by Raj Narharia**
 
 </div>
 
 ---
 
+## ⭐ Support
+
+If you find this project useful or interesting, consider giving the repository a **⭐ Star**.
+
+Contributions, suggestions, feedback, and improvements are always welcome.
+
+---
+
 <div align="center">
 
-### 🎵 Music Genre Clustering AI
+# 🎵 Music Genre Clustering AI
+
+### Intelligent Music Discovery Using Unsupervised Machine Learning
 
 **Python • Streamlit • K-Means • Scikit-Learn • PCA • Plotly**
 
-© 2026 Raj Narharia
+<br>
+
+**© 2026 Raj Narharia**
 
 </div>
