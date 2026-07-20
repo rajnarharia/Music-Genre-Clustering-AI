@@ -26,6 +26,11 @@ sys.path.append(
 from clustering import perform_clustering
 from similarity import find_similar_songs
 from navigation import show_navigation
+from evaluation import find_best_k
+from cluster_profiles import (
+    generate_cluster_profiles,
+    profiles_to_dataframe
+)
 
 
 # =========================================================
@@ -45,17 +50,31 @@ st.set_page_config(
 # =========================================================
 
 def load_css(file_path):
+
     try:
-        with open(file_path, encoding="utf-8") as file:
+
+        with open(
+            file_path,
+            encoding="utf-8"
+        ) as file:
+
             st.markdown(
                 f"<style>{file.read()}</style>",
                 unsafe_allow_html=True
             )
+
     except FileNotFoundError:
+
         pass
 
 
-load_css("assets/style.css")
+load_css(
+    os.path.join(
+        os.path.dirname(__file__),
+        "assets",
+        "style.css"
+    )
+)
 
 
 # =========================================================
@@ -66,7 +85,7 @@ page = show_navigation()
 
 
 # =========================================================
-# LOAD DEFAULT CLUSTERING
+# LOAD CLUSTERED DATA
 # =========================================================
 
 @st.cache_data
@@ -80,7 +99,22 @@ def load_clustered_data(n_clusters=2):
 
 
 # =========================================================
-# CREATE PCA DATA
+# FIND BEST K
+# =========================================================
+
+@st.cache_data
+def get_best_k():
+
+    best_k, best_score, results = find_best_k(
+        min_k=2,
+        max_k=10
+    )
+
+    return best_k, best_score, results
+
+
+# =========================================================
+# PCA
 # =========================================================
 
 def add_pca_columns(df, X_scaled):
@@ -111,7 +145,13 @@ def add_pca_columns(df, X_scaled):
 # DEFAULT DATA
 # =========================================================
 
-df, X_scaled, model = load_clustered_data(2)
+best_k, best_score, evaluation_results = (
+    get_best_k()
+)
+
+df, X_scaled, model = load_clustered_data(
+    best_k
+)
 
 df = add_pca_columns(
     df,
@@ -130,17 +170,19 @@ if page == "🏠 Home":
     )
 
     st.subheader(
-        "Discover Hidden Patterns in Music Using Machine Learning"
+        "Discover Hidden Patterns in Music "
+        "Using Machine Learning"
     )
 
     st.markdown(
         """
         This intelligent music analytics platform uses
-        **K-Means Clustering** to automatically discover groups
-        of similar songs.
+        **K-Means Clustering** to automatically discover
+        groups of similar songs.
 
-        Songs are grouped according to their audio characteristics
-        instead of simply relying on their existing genre labels.
+        Songs are grouped according to their numerical
+        audio characteristics instead of simply relying
+        on predefined genre labels.
 
         The machine learning model analyzes:
 
@@ -150,7 +192,9 @@ if page == "🏠 Home":
 
     st.write("")
 
-    # ================= METRICS =================
+    # =====================================================
+    # MAIN METRICS
+    # =====================================================
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -164,8 +208,8 @@ if page == "🏠 Home":
     with col2:
 
         st.metric(
-            "🤖 Music Clusters",
-            df["cluster"].nunique()
+            "🤖 Recommended Clusters",
+            best_k
         )
 
     with col3:
@@ -182,9 +226,17 @@ if page == "🏠 Home":
             df["artist_name"].nunique()
         )
 
+    st.success(
+        f"🧠 AI Recommendation: K = {best_k} "
+        f"achieved the highest Silhouette Score "
+        f"of {best_score:.4f}."
+    )
+
     st.divider()
 
-    # ================= FEATURES =================
+    # =====================================================
+    # FEATURES
+    # =====================================================
 
     st.header(
         "✨ Platform Features"
@@ -210,9 +262,9 @@ if page == "🏠 Home":
             """
             ### 🤖 Dynamic Clustering
 
-            Choose the number of clusters
-            and run K-Means clustering
-            interactively.
+            Experiment with different
+            values of K and discover
+            hidden music groups.
             """
         )
 
@@ -228,19 +280,17 @@ if page == "🏠 Home":
             """
         )
 
-    st.divider()
-
     col1, col2, col3 = st.columns(3)
 
     with col1:
 
         st.info(
             """
-            ### 📊 Interactive Analytics
+            ### 🧠 Best-K Detection
 
-            Explore relationships between
-            energy, danceability, BPM
-            and music clusters.
+            Automatically evaluates
+            multiple cluster values using
+            the Silhouette Score.
             """
         )
 
@@ -248,11 +298,11 @@ if page == "🏠 Home":
 
         st.info(
             """
-            ### 🧠 PCA Visualization
+            ### 🎼 Cluster Profiles
 
-            Visualize high-dimensional
-            music features in an interactive
-            two-dimensional space.
+            Automatically describes the
+            musical characteristics of
+            discovered clusters.
             """
         )
 
@@ -260,17 +310,18 @@ if page == "🏠 Home":
 
         st.info(
             """
-            ### 📈 Cluster Evaluation
+            ### 📥 Export Results
 
-            Evaluate clustering quality
-            using the Silhouette Score
-            and model inertia.
+            Download the clustered music
+            dataset directly as a CSV file.
             """
         )
 
     st.divider()
 
-    # ================= PIPELINE =================
+    # =====================================================
+    # ML PIPELINE
+    # =====================================================
 
     st.header(
         "⚙️ Machine Learning Pipeline"
@@ -290,19 +341,23 @@ if page == "🏠 Home":
 
         ↓
 
-        ### 4️⃣ K-Means Clustering
+        ### 4️⃣ Automatic Best-K Evaluation
 
         ↓
 
-        ### 5️⃣ Silhouette Score Evaluation
+        ### 5️⃣ K-Means Clustering
 
         ↓
 
-        ### 6️⃣ PCA Visualization
+        ### 6️⃣ Cluster Profile Generation
 
         ↓
 
-        ### 7️⃣ Similar Song Discovery
+        ### 7️⃣ PCA Visualization
+
+        ↓
+
+        ### 8️⃣ Similar Song Discovery
         """
     )
 
@@ -319,12 +374,14 @@ elif page == "📂 Dataset":
 
     st.markdown(
         """
-        Explore and search the complete dataset
-        used for music clustering.
+        Explore, search and download the music
+        dataset used by the clustering model.
         """
     )
 
-    # ================= METRICS =================
+    # =====================================================
+    # DATASET METRICS
+    # =====================================================
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -352,17 +409,21 @@ elif page == "📂 Dataset":
     with col4:
 
         st.metric(
-            "📊 Features",
-            5
+            "🤖 Clusters",
+            df["cluster"].nunique()
         )
 
     st.divider()
 
-    # ================= SEARCH =================
+    # =====================================================
+    # SEARCH
+    # =====================================================
 
     search = st.text_input(
         "🔍 Search Song or Artist",
-        placeholder="Enter song or artist name..."
+        placeholder=(
+            "Enter a song or artist name..."
+        )
     )
 
     filtered_df = df.copy()
@@ -387,23 +448,47 @@ elif page == "📂 Dataset":
         f"Showing {len(filtered_df)} songs"
     )
 
+    display_columns = [
+        "track_name",
+        "artist_name",
+        "genre",
+        "year",
+        "bpm",
+        "energy",
+        "danceability",
+        "loudness",
+        "speechiness",
+        "cluster"
+    ]
+
     st.dataframe(
         filtered_df[
-            [
-                "track_name",
-                "artist_name",
-                "genre",
-                "year",
-                "bpm",
-                "energy",
-                "danceability",
-                "loudness",
-                "speechiness",
-                "cluster"
-            ]
+            display_columns
         ],
         use_container_width=True,
         hide_index=True
+    )
+
+    # =====================================================
+    # CSV DOWNLOAD
+    # =====================================================
+
+    csv_data = filtered_df[
+        display_columns
+    ].to_csv(
+        index=False
+    ).encode(
+        "utf-8"
+    )
+
+    st.download_button(
+        label="📥 Download Dataset as CSV",
+        data=csv_data,
+        file_name=(
+            "music_genre_clustered_dataset.csv"
+        ),
+        mime="text/csv",
+        use_container_width=True
     )
 
 
@@ -419,14 +504,27 @@ elif page == "🤖 Clustering":
 
     st.markdown(
         """
-        Configure and run the K-Means algorithm
-        to discover different groups of similar songs.
+        Experiment with K-Means clustering and
+        discover hidden patterns within the music
+        dataset.
         """
+    )
+
+    # =====================================================
+    # AI RECOMMENDATION
+    # =====================================================
+
+    st.success(
+        f"🧠 Recommended K: **{best_k}** | "
+        f"Best Silhouette Score: "
+        f"**{best_score:.4f}**"
     )
 
     st.divider()
 
-    # ================= CONFIGURATION =================
+    # =====================================================
+    # CONFIGURATION
+    # =====================================================
 
     st.subheader(
         "⚙️ Configure Clustering"
@@ -436,13 +534,16 @@ elif page == "🤖 Clustering":
         "Select Number of Clusters (K)",
         min_value=2,
         max_value=10,
-        value=2,
+        value=best_k,
         step=1
     )
 
-    st.caption(
-        "Based on previous evaluation, K = 2 achieved the highest Silhouette Score."
-    )
+    if selected_k == best_k:
+
+        st.info(
+            "✨ You are currently using the "
+            "AI-recommended number of clusters."
+        )
 
     run_clustering = st.button(
         "🚀 Run AI Clustering",
@@ -452,7 +553,8 @@ elif page == "🤖 Clustering":
     if run_clustering:
 
         with st.spinner(
-            "Analyzing songs and creating music clusters..."
+            "Analyzing songs and creating "
+            "music clusters..."
         ):
 
             dynamic_df, dynamic_X, dynamic_model = (
@@ -494,9 +596,10 @@ elif page == "🤖 Clustering":
         st.success(
             "Clustering completed successfully!"
         )
-        st.balloons()
 
-    # ================= GET CURRENT RESULT =================
+    # =====================================================
+    # CURRENT RESULTS
+    # =====================================================
 
     if "clustering_df" in st.session_state:
 
@@ -528,16 +631,15 @@ elif page == "🤖 Clustering":
 
         cluster_model = model
 
-        current_k = 2
+        current_k = best_k
 
-        current_score = silhouette_score(
-            X_scaled,
-            df["cluster"]
-        )
+        current_score = best_score
 
     st.divider()
 
-    # ================= MODEL METRICS =================
+    # =====================================================
+    # PERFORMANCE
+    # =====================================================
 
     st.subheader(
         "📈 Clustering Performance"
@@ -573,9 +675,78 @@ elif page == "🤖 Clustering":
             f"{cluster_model.inertia_:.2f}"
         )
 
+    if current_k == best_k:
+
+        st.success(
+            "🏆 This configuration matches "
+            "the recommended Best-K result."
+        )
+
+    else:
+
+        score_difference = (
+            best_score
+            - current_score
+        )
+
+        if score_difference > 0:
+
+            st.warning(
+                f"The recommended K = {best_k} "
+                f"has a higher Silhouette Score "
+                f"by {score_difference:.4f}."
+            )
+
     st.divider()
 
-    # ================= CLUSTER DISTRIBUTION =================
+    # =====================================================
+    # K EVALUATION CHART
+    # =====================================================
+
+    st.header(
+        "📈 Automatic Best-K Evaluation"
+    )
+
+    evaluation_df = {
+        "K": [
+            result["k"]
+            for result
+            in evaluation_results
+        ],
+        "Silhouette Score": [
+            result["silhouette_score"]
+            for result
+            in evaluation_results
+        ]
+    }
+
+    evaluation_fig = px.line(
+        evaluation_df,
+        x="K",
+        y="Silhouette Score",
+        markers=True,
+        title=(
+            "Silhouette Score for "
+            "Different Values of K"
+        )
+    )
+
+    st.plotly_chart(
+        evaluation_fig,
+        use_container_width=True
+    )
+
+    st.caption(
+        f"🏆 Best result: K = {best_k} "
+        f"with Silhouette Score "
+        f"{best_score:.4f}"
+    )
+
+    st.divider()
+
+    # =====================================================
+    # CLUSTER DISTRIBUTION
+    # =====================================================
 
     st.header(
         "📊 Cluster Distribution"
@@ -609,7 +780,10 @@ elif page == "🤖 Clustering":
         x="Cluster",
         y="Songs",
         text="Songs",
-        title="Number of Songs in Each Cluster"
+        title=(
+            "Number of Songs "
+            "in Each Cluster"
+        )
     )
 
     cluster_fig.update_traces(
@@ -623,7 +797,89 @@ elif page == "🤖 Clustering":
 
     st.divider()
 
-    # ================= PCA VISUALIZATION =================
+    # =====================================================
+    # CLUSTER PROFILES
+    # =====================================================
+
+    st.header(
+        "🎼 AI-Generated Cluster Profiles"
+    )
+
+    st.markdown(
+        """
+        Each profile is automatically generated
+        by comparing the average audio features
+        of each cluster with the overall dataset.
+        """
+    )
+
+    profiles = generate_cluster_profiles(
+        cluster_df
+    )
+
+    for cluster_id, profile in profiles.items():
+
+        with st.expander(
+            f"🎵 Cluster {cluster_id} — "
+            f"{profile['name']}",
+            expanded=True
+        ):
+
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+
+                st.metric(
+                    "🎵 Songs",
+                    profile[
+                        "song_count"
+                    ]
+                )
+
+                st.metric(
+                    "🎚️ Average BPM",
+                    profile[
+                        "bpm"
+                    ]
+                )
+
+            with col2:
+
+                st.metric(
+                    "⚡ Energy",
+                    profile[
+                        "energy"
+                    ]
+                )
+
+                st.metric(
+                    "💃 Danceability",
+                    profile[
+                        "danceability"
+                    ]
+                )
+
+            with col3:
+
+                st.metric(
+                    "🔊 Loudness",
+                    profile[
+                        "loudness"
+                    ]
+                )
+
+                st.metric(
+                    "🎙️ Speechiness",
+                    profile[
+                        "speechiness"
+                    ]
+                )
+
+    st.divider()
+
+    # =====================================================
+    # PCA VISUALIZATION
+    # =====================================================
 
     st.header(
         "🧠 Interactive PCA Visualization"
@@ -633,7 +889,7 @@ elif page == "🤖 Clustering":
         """
         PCA converts the five audio features into
         two dimensions so the discovered music
-        clusters can be visualized.
+        clusters can be visualized interactively.
         """
     )
 
@@ -673,7 +929,9 @@ elif page == "🤖 Clustering":
 
     st.divider()
 
-    # ================= CLUSTER EXPLORER =================
+    # =====================================================
+    # CLUSTER EXPLORER
+    # =====================================================
 
     st.header(
         "🎵 Explore Music Clusters"
@@ -688,32 +946,114 @@ elif page == "🤖 Clustering":
         )
     )
 
+    selected_profile = profiles[
+        int(selected_cluster)
+    ]
+
+    st.info(
+        f"🎼 Cluster {selected_cluster}: "
+        f"**{selected_profile['name']}**"
+    )
+
     cluster_songs = cluster_df[
         cluster_df[
             "cluster"
         ] == selected_cluster
     ]
 
-    st.info(
-        f"Cluster {selected_cluster} contains "
+    st.caption(
+        f"This cluster contains "
         f"{len(cluster_songs)} songs."
     )
 
+    cluster_display_columns = [
+        "track_name",
+        "artist_name",
+        "genre",
+        "bpm",
+        "energy",
+        "danceability",
+        "loudness",
+        "speechiness"
+    ]
+
     st.dataframe(
         cluster_songs[
-            [
-                "track_name",
-                "artist_name",
-                "genre",
-                "bpm",
-                "energy",
-                "danceability",
-                "loudness",
-                "speechiness"
-            ]
+            cluster_display_columns
         ],
         use_container_width=True,
         hide_index=True
+    )
+
+    # =====================================================
+    # DOWNLOAD CLUSTER
+    # =====================================================
+
+    cluster_csv = cluster_songs[
+        cluster_display_columns
+    ].to_csv(
+        index=False
+    ).encode(
+        "utf-8"
+    )
+
+    st.download_button(
+        label=(
+            f"📥 Download Cluster "
+            f"{selected_cluster} as CSV"
+        ),
+        data=cluster_csv,
+        file_name=(
+            f"music_cluster_"
+            f"{selected_cluster}.csv"
+        ),
+        mime="text/csv",
+        use_container_width=True
+    )
+
+    st.divider()
+
+    # =====================================================
+    # DOWNLOAD COMPLETE CLUSTERING RESULTS
+    # =====================================================
+
+    st.header(
+        "📥 Export Clustering Results"
+    )
+
+    export_columns = [
+        "track_name",
+        "artist_name",
+        "genre",
+        "year",
+        "bpm",
+        "energy",
+        "danceability",
+        "loudness",
+        "speechiness",
+        "cluster"
+    ]
+
+    complete_csv = cluster_df[
+        export_columns
+    ].to_csv(
+        index=False
+    ).encode(
+        "utf-8"
+    )
+
+    st.download_button(
+        label=(
+            "📥 Download Complete "
+            "Clustered Dataset"
+        ),
+        data=complete_csv,
+        file_name=(
+            f"music_clustering_k"
+            f"{current_k}.csv"
+        ),
+        mime="text/csv",
+        use_container_width=True
     )
 
 
@@ -729,12 +1069,14 @@ elif page == "📊 Analytics":
 
     st.markdown(
         """
-        Explore patterns and relationships
-        between different music characteristics.
+        Explore patterns and relationships between
+        different musical characteristics.
         """
     )
 
-    # ================= FILTER =================
+    # =====================================================
+    # FILTER
+    # =====================================================
 
     st.subheader(
         "🔍 Analytics Filters"
@@ -765,7 +1107,9 @@ elif page == "📊 Analytics":
 
     st.divider()
 
-    # ================= GENRES =================
+    # =====================================================
+    # TOP GENRES
+    # =====================================================
 
     st.header(
         "🎼 Top Music Genres"
@@ -800,7 +1144,9 @@ elif page == "📊 Analytics":
 
     st.divider()
 
-    # ================= ENERGY VS DANCEABILITY =================
+    # =====================================================
+    # ENERGY VS DANCEABILITY
+    # =====================================================
 
     st.header(
         "⚡ Energy vs Danceability"
@@ -830,7 +1176,9 @@ elif page == "📊 Analytics":
 
     st.divider()
 
-    # ================= BPM =================
+    # =====================================================
+    # BPM DISTRIBUTION
+    # =====================================================
 
     st.header(
         "🎚️ BPM Distribution"
@@ -853,7 +1201,9 @@ elif page == "📊 Analytics":
 
     st.divider()
 
-    # ================= ENERGY DISTRIBUTION =================
+    # =====================================================
+    # ENERGY DISTRIBUTION
+    # =====================================================
 
     st.header(
         "⚡ Energy Distribution"
@@ -894,7 +1244,9 @@ elif page == "🎧 Similar Songs":
 
     st.divider()
 
-    # ================= SELECT SONG =================
+    # =====================================================
+    # SELECT SONG
+    # =====================================================
 
     selected_song = st.selectbox(
         "🎵 Select Your Song",
@@ -910,10 +1262,6 @@ elif page == "🎧 Similar Songs":
             "track_name"
         ] == selected_song
     ].iloc[0]
-
-    st.write("")
-
-    # ================= SONG INFORMATION =================
 
     st.subheader(
         "🎶 Selected Song"
@@ -961,7 +1309,9 @@ elif page == "🎧 Similar Songs":
 
     st.divider()
 
-    # ================= AUDIO FEATURES =================
+    # =====================================================
+    # AUDIO FEATURES
+    # =====================================================
 
     st.subheader(
         "🎛️ Audio Characteristics"
@@ -1007,7 +1357,9 @@ elif page == "🎧 Similar Songs":
 
     st.write("")
 
-    # ================= RECOMMENDATIONS =================
+    # =====================================================
+    # RECOMMENDATIONS
+    # =====================================================
 
     if st.button(
         "✨ Find Similar Songs",
@@ -1035,7 +1387,6 @@ elif page == "🎧 Similar Songs":
                 f"Top 5 songs similar to "
                 f"{selected_song}"
             )
-            st.snow()
 
             recommendations = (
                 recommendations.copy()
@@ -1092,27 +1443,22 @@ elif page == "🎧 Similar Songs":
                 "No similar songs found."
             )
 
-
 # =========================================================
 # FOOTER
 # =========================================================
 
 st.divider()
 
-st.markdown(
-    """
-<div style="text-align:center; padding:30px; margin-top:20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; backdrop-filter: blur(10px); color:#94A3B8; line-height:2; font-family: 'Outfit', sans-serif;">
-    <h3 style="color: #00e5ff; margin-bottom: 5px; font-weight: 800;">🎵 Music Genre Clustering AI</h3>
-    <span style="font-size: 1.1em; color: #f8fafc;">Intelligent Music Discovery Using Unsupervised Machine Learning</span><br><br>
-    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
-        <span style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; padding: 4px 12px; border-radius: 12px; font-size: 0.9em; font-weight: 600;">Python</span>
-        <span style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6; padding: 4px 12px; border-radius: 12px; font-size: 0.9em; font-weight: 600;">Streamlit</span>
-        <span style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; padding: 4px 12px; border-radius: 12px; font-size: 0.9em; font-weight: 600;">K-Means</span>
-        <span style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6; padding: 4px 12px; border-radius: 12px; font-size: 0.9em; font-weight: 600;">Scikit-Learn</span>
-        <span style="background: rgba(0, 229, 255, 0.1); color: #00e5ff; padding: 4px 12px; border-radius: 12px; font-size: 0.9em; font-weight: 600;">PCA</span>
-        <span style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6; padding: 4px 12px; border-radius: 12px; font-size: 0.9em; font-weight: 600;">Plotly</span>
-    </div>
-</div>
-    """,
-    unsafe_allow_html=True
+st.markdown("### 🎵 Music Genre Clustering AI")
+
+st.write(
+    "Intelligent Music Discovery Using "
+    "Unsupervised Machine Learning"
 )
+
+st.caption(
+    "Python • Streamlit • K-Means • "
+    "Scikit-Learn • PCA • Plotly"
+)
+
+st.write("Developed by **Raj Narharia**")
